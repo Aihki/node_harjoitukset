@@ -1,4 +1,4 @@
-The end point that are used in this here and examples of them
+The endpoint that are used in this here and examples of them
 
 ### GET /
 
