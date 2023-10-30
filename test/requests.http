@@ -1,0 +1,33 @@
+
+
+### GET /
+GET http://127.0.0.1:3000/
+
+### GET / items
+GET http://127.0.0.1:3000/items
+
+
+### GET / items/:id
+GET http://127.0.0.1:3000/items/5
+
+### delete / items/:id
+DELETE http://127.0.0.1:3000/items/6
+
+### PUT / items/:id
+PUT http://127.0.0.1:3000/items/
+Content-Type: application/json
+
+{
+    "id": 7,
+    "name": "tänään tehdään kurkkukeitto"
+}
+
+
+### POST/items
+POST  http://127.0.0.1:3000/items
+Content-Type: application/json
+    
+{
+ 
+    "name": "tänään tehdään kurkkukeitto"
+}
