@@ -84,16 +84,16 @@ const updateItem = (req, res) => {
       }
     });
 };
-const deleteItems = (res, id) => {
+const deleteItem = (res, id) => {
   const item = items.find((element) => element.id == id);
   if (item) {
     items.splice(items.indexOf(item), 1);
-    res.writeHead(204, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ message: "item deleted" }));
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end('{"message": "Item deleted."}');
   } else {
     res.writeHead(404, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ message: "item not found" }));
+    res.end('{"message": "Item not found."}');
   }
 };
 
-export { getItems, getItemsById, postItem, deleteItems, updateItem };
+export { items, getItems, getItemsById, postItem, deleteItem, updateItem };

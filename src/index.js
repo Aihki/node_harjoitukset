@@ -1,9 +1,10 @@
 import http from "http";
 import {
+  items,
   getItems,
   getItemsById,
   postItem,
-  deleteItems,
+  deleteItem,
   updateItem,
 } from "./items.js";
 const hostname = "127.0.0.1";
@@ -31,8 +32,8 @@ const server = http.createServer((req, res) => {
     console.log("PUTing item with id", reqParts[2]);
     updateItem(req, res);
   } else if (method === "DELETE" && reqParts[1] === "items" && reqParts[2]) {
-    console.log("DELETE the item with id", reqParts[2]);
-    deleteItems(req, res);
+    console.log("DELETEing item with id", reqParts[2]);
+    deleteItem(res, reqParts[2]);
   } else {
     res.writeHead(404, { "Content-Type": "application/json" });
     res.end('{"message": "404 Resource not found!"}');

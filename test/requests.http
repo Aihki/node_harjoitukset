@@ -8,17 +8,17 @@ GET http://127.0.0.1:3000/items
 
 
 ### GET / items/:id
-GET http://127.0.0.1:3000/items/5
+GET http://127.0.0.1:3000/items/
 
 ### delete / items/:id
-DELETE http://127.0.0.1:3000/items/6
+DELETE http://127.0.0.1:3000/items/5
 
 ### PUT / items/:id
 PUT http://127.0.0.1:3000/items/
 Content-Type: application/json
 
 {
-    "id": 7,
+    "id": 6,
     "name": "tänään tehdään kurkkukeitto"
 }
 
@@ -28,6 +28,11 @@ POST  http://127.0.0.1:3000/items
 Content-Type: application/json
     
 {
- 
+    "id" : 8,
     "name": "tänään tehdään kurkkukeitto"
 }
+
+### POST /items error
+POST http://localhost:3000/items
+
+{"jotain": "jotain"}
