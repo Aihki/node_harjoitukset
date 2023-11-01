@@ -11,46 +11,29 @@ const items = [
   },
 ];
 
-const getItems = (res) => {
-  res.writeHead(200, { "Content-Type": "application/json" });
-  const jsonItems = JSON.stringify(items);
-  res.end(`{"message": "All items", "items": ${jsonItems}}`);
+const getItems = (req, res) => {
+  res.json(items);
 };
 
-const getItemsById = (res, id) => {
-  const item = items.find((element) => element.id == id);
+const getItemsById = (req, res) => {
+  console.log(req.params);
+  const item = items.find((element) => element.id == req.params.id);
   if (item) {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    console.log(item);
-    res.end(JSON.stringify(item));
+    res.json(item);
   } else {
-    res.writeHead(404, { "Content-Type": "application/json" });
-    res.end(`{"message": "404 Resource not found!"}`);
+    res.status(404);
+    res.json({ message: "404 Resource not found!" });
   }
 };
 const postItem = (req, res) => {
-  let body = [];
-  req
-    .on("error", (err) => {
-      console.error(err);
-    })
-    .on("data", (chunk) => {
-      body.push(chunk);
-    })
-    .on("end", () => {
-      body = Buffer.concat(body).toString();
-      console.log("req body", body);
-      body = JSON.parse(body);
-      if (!body.name) {
-        res.writeHead(400, { "Content-Type": "application/json" });
-        res.end(`{"message": "bad request."}`);
-        return;
-      }
-      const newId = items[items.length - 1].id + 1;
-      items.push({ id: newId, name: body.name });
-      res.writeHead(201, { "Content-Type": "application/json" });
-      res.end(`{"message": "New omena added."}`);
-    });
+  console.log("new item posted", req.body);
+  if (req.body.name) {
+    items.push({ id: items.length + 1, name: req.body.name });
+
+    res.sendStatus(201);
+  } else {
+    res.sendStatus(400);
+  }
 };
 
 const updateItem = (req, res) => {

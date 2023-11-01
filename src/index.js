@@ -1,45 +1,39 @@
-import http from "http";
-import {
-  items,
-  getItems,
-  getItemsById,
-  postItem,
-  deleteItem,
-  updateItem,
-} from "./items.js";
-const hostname = "127.0.0.1";
-const port = 3000;
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import { getItems, getItemsById, postItem } from "./items.js";
 
-const server = http.createServer((req, res) => {
-  console.log("request", req.method, req.url);
-  const { method, url } = req;
-  const reqParts = url.split("/");
-  if (method === "GET" && url === "/") {
-    res.writeHead(200, { "Content-Type": "text/html" });
-    res.write("<h1>Welcome to my API</h1>");
-    res.write("<p>documentation comes here</p>");
-    res.end();
-  } else if (method === "GET" && reqParts[1] === "items" && reqParts[2]) {
-    console.log("GET the item with id", reqParts[2]);
-    getItemsById(res, reqParts[2]);
-  } else if (method === "GET" && reqParts[1] === "items") {
-    console.log("GET all items");
-    getItems(res);
-  } else if (method === "POST" && reqParts[1] === "items") {
-    console.log("POST a new item");
-    postItem(req, res);
-  } else if (method === "PUT" && reqParts[1] === "items") {
-    console.log("PUTing item with id", reqParts[2]);
-    updateItem(req, res);
-  } else if (method === "DELETE" && reqParts[1] === "items" && reqParts[2]) {
-    console.log("DELETEing item with id", reqParts[2]);
-    deleteItem(res, reqParts[2]);
-  } else {
-    res.writeHead(404, { "Content-Type": "application/json" });
-    res.end('{"message": "404 Resource not found!"}');
-  }
+const hostname = "127.0.0.1";
+const app = express();
+const port = 3000;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.json());
+app.use("/docs", express.static(path.join(__dirname, "../docs")));
+
+app.get("/", (req, res) => {
+  res.send("Welcome to my REST API!");
 });
 
-server.listen(port, hostname, () => {
+app.get("/kukkuu", (req, res) => {
+  const myResponse = { message: "No mutta kukkuu vaan!" };
+  res.status(400);
+  res.json(myResponse);
+});
+
+///example generic items api
+//get all items
+app.get("/api/items", getItems);
+///get item by id
+app.get("/api/items/:id", getItemsById);
+///edit
+app.put("/api/items");
+///add new item
+app.post("/api/items", postItem);
+///delete item
+app.delete("/api/items");
+
+app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
