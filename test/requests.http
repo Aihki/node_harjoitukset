@@ -62,5 +62,5 @@ Content-Type: application/json
   "title": "New image",
   "description": "The description of the new image",
   "user_id": 305,
-  "media_type": "image/jpeg",
+  "media_type": "image/jpeg"
 }
