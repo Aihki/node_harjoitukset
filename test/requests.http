@@ -3,18 +3,19 @@
 ### GET /
 GET http://127.0.0.1:3000/
 
-### GET / items
-GET http://127.0.0.1:3000/items
 
+
+### GET / items
+GET http://127.0.0.1:3000/api/items
 
 ### GET / items/:id
-GET http://127.0.0.1:3000/items/
+GET http://127.0.0.1:3000/api/items/
 
 ### delete / items/:id
-DELETE http://127.0.0.1:3000/items/5
+DELETE http://127.0.0.1:3000/api/items/5
 
 ### PUT / items/:id
-PUT http://127.0.0.1:3000/items/
+PUT http://127.0.0.1:3000/api/items/
 Content-Type: application/json
 
 {
@@ -24,7 +25,7 @@ Content-Type: application/json
 
 
 ### POST/items
-POST  http://127.0.0.1:3000/items
+POST  http://127.0.0.1:3000/api/items
 Content-Type: application/json
     
 {
@@ -33,6 +34,33 @@ Content-Type: application/json
 }
 
 ### POST /items error
-POST http://localhost:3000/items
+POST http://localhost:3000/api/items
 
 {"jotain": "jotain"}
+
+
+### Media
+
+
+### GET /
+GET http://127.0.0.1:3000/
+
+### GET /
+GET http://127.0.0.1:3000/api/media
+
+### GET / media/:id
+GET http://127.0.0.1:3000/api/media/9590
+
+
+
+### POST/media
+POST  http://127.0.0.1:3000/api/media
+Content-Type: application/json
+    
+{
+  "filename": "60ac.jpg",
+  "title": "New image",
+  "description": "The description of the new image",
+  "user_id": 305,
+  "media_type": "image/jpeg",
+}

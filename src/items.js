@@ -11,7 +11,19 @@ const items = [
   },
 ];
 
+/**
+ *Gets all items
+ *
+ * @param {object} req -http request
+ * @param {object} res -http response
+ */
+
 const getItems = (req, res) => {
+  const limit = req.query.limit;
+  //TODO: check that limit is a number
+  if (limit) {
+    res.json(items.slice(0, limit));
+  }
   res.json(items);
 };
 
@@ -25,11 +37,18 @@ const getItemsById = (req, res) => {
     res.json({ message: "404 Resource not found!" });
   }
 };
+
+/**
+ *
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+
 const postItem = (req, res) => {
   console.log("new item posted", req.body);
   if (req.body.name) {
     items.push({ id: items.length + 1, name: req.body.name });
-
     res.sendStatus(201);
   } else {
     res.sendStatus(400);
