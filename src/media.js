@@ -82,4 +82,35 @@ const postMedia = (req, res) => {
   }
 };
 
-export { mediaItems, getMediaItems, getMediaById, postMedia };
+const updateMedia = (req, res) => {
+  const media = mediaItems.find((element) => element.media_id == req.params.id);
+  if (media) {
+    media.title = req.body.title;
+    media.description = req.body.description;
+    res.json(media);
+  } else {
+    res.status(404);
+    res.json({ message: "404 Media not found!" });
+  }
+};
+
+const deleteMedia = (req, res) => {
+  const media = mediaItems.find((element) => element.media_id == req.params.id);
+  console.log(media);
+  if (media) {
+    mediaItems.splice(mediaItems.indexOf(media), 1);
+    res.json(media);
+  } else {
+    res.status(404);
+    res.json({ message: "404 Media not found!" });
+  }
+};
+
+export {
+  mediaItems,
+  getMediaItems,
+  getMediaById,
+  postMedia,
+  updateMedia,
+  deleteMedia,
+};
