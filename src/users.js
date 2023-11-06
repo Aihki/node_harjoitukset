@@ -110,4 +110,6 @@ const deleteUser = (req, res) => {
   }
 };
 
+//comments
+
 export { getUsers, getUserById, postUser, updateUser, deleteUser };
