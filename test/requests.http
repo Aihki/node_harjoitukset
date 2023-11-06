@@ -1,8 +1,7 @@
 
 
 ### GET /
-GET http://127.0.0.1:3000/
-
+GET http://127.0.0.1:3000 
 
 
 ### GET / items
@@ -78,11 +77,8 @@ Content-Type: application/json
 DELETE http://127.0.0.1:3000/api/media/9590
 
 
-### USer
+### User
 
-
-### GET /
-GET http://127.0.0.1:3000/
 
 ### GET /user
 GET http://127.0.0.1:3000/api/user/
@@ -106,7 +102,7 @@ Content-Type: application/json
 }
 
 ### PUT / user/:id
-PUT http://127.0.0.1:3000/api/user
+PUT http://127.0.0.1:3000/api/user/42
 Content-Type: application/json
 
 {
