@@ -73,7 +73,7 @@ Content-Type: application/json
   "description": "Some new description"
 }
 
-### delete / items/:id
+### delete / api/media/:id
 DELETE http://127.0.0.1:3000/api/media/9590
 
 
