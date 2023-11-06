@@ -50,11 +50,22 @@ const mediaItems = [
     created_at: "2023-10-12T06:56:41.000Z",
   },
 ];
+/**
+ *Gets all Media
+ *
+ * @param {object} req -http request
+ * @param {object} res -http response
+ */
 
 const getMediaItems = (req, res) => {
   res.json(mediaItems);
 };
-
+/**
+ *Gets Media by its id
+ *
+ * @param {object} req -http request
+ * @param {object} res -http response
+ */
 const getMediaById = (req, res) => {
   console.log(req.params);
   const media = mediaItems.find((element) => element.media_id == req.params.id);
@@ -65,6 +76,12 @@ const getMediaById = (req, res) => {
     res.json({ message: "404 Media not found!" });
   }
 };
+/**
+ *post new Media
+ *
+ * @param {object} req -http request
+ * @param {object} res -http response
+ */
 
 const postMedia = (req, res) => {
   console.log("new media posted", req.body);
@@ -82,6 +99,12 @@ const postMedia = (req, res) => {
   }
 };
 
+/**
+ *updates Media by its id
+ *
+ * @param {object} req -http request
+ * @param {object} res -http response
+ */
 const updateMedia = (req, res) => {
   const media = mediaItems.find((element) => element.media_id == req.params.id);
   if (media) {
@@ -93,6 +116,13 @@ const updateMedia = (req, res) => {
     res.json({ message: "404 Media not found!" });
   }
 };
+
+/**
+ *deletes media by its id
+ *
+ * @param {object} req -http request
+ * @param {object} res -http response
+ */
 
 const deleteMedia = (req, res) => {
   const media = mediaItems.find((element) => element.media_id == req.params.id);

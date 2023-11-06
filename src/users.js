@@ -24,11 +24,22 @@ const users = [
     created_at: "2023-04-02T05:56:41.000Z",
   },
 ];
+/**
+ *Gets all users
+ *
+ * @param {object} req -http request
+ * @param {object} res -http response
+ */
 
 const getUsers = (req, res) => {
   res.json(users);
 };
-
+/**
+ *Gets user by its id
+ *
+ * @param {object} req -http request
+ * @param {object} res -http response
+ */
 const getUserById = (req, res) => {
   const user = users.find((element) => element.user_id == req.params.id);
   if (user) {
@@ -38,6 +49,12 @@ const getUserById = (req, res) => {
     res.json({ message: "404 Media not found!" });
   }
 };
+/**
+ *creates new user
+ *
+ * @param {object} req -http request
+ * @param {object} res -http response
+ */
 
 const postUser = (req, res) => {
   console.log("new media posted", req.body);
@@ -56,6 +73,12 @@ const postUser = (req, res) => {
   }
 };
 
+/**
+ *this upadtes existing user
+ *
+ * @param {object} req -http request
+ * @param {object} res -http response
+ */
 const updateUser = (req, res) => {
   const user = users.find((element) => element.user_id == req.params.id);
   if (user) {
@@ -69,6 +92,12 @@ const updateUser = (req, res) => {
   }
 };
 
+/**
+ *deletes user by its id
+ *
+ * @param {object} req -http request
+ * @param {object} res -http response
+ */
 const deleteUser = (req, res) => {
   const user = users.find((element) => element.user_id == req.params.id);
 
