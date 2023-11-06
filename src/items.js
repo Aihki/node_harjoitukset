@@ -27,6 +27,13 @@ const getItems = (req, res) => {
   res.json(items);
 };
 
+/**
+ *Gets item by id
+ *
+ * @param {object} req -http request
+ * @param {object} res -http response
+ */
+
 const getItemsById = (req, res) => {
   console.log(req.params);
   const item = items.find((element) => element.id == req.params.id);
@@ -39,10 +46,10 @@ const getItemsById = (req, res) => {
 };
 
 /**
+ *creates new item
  *
- *
- * @param {*} req
- * @param {*} res
+ * @param {object} req -http request
+ * @param {object} res -http response
  */
 
 const postItem = (req, res) => {
@@ -54,6 +61,12 @@ const postItem = (req, res) => {
     res.sendStatus(400);
   }
 };
+/**
+ *updates item by id
+ *
+ * @param {object} req -http request
+ * @param {object} res -http response
+ */
 
 const updateItem = (req, res) => {
   let body = [];
@@ -86,6 +99,13 @@ const updateItem = (req, res) => {
       }
     });
 };
+
+/**
+ *delete item by id
+ *
+ * @param {object} id -id of the item to be deleted
+ * @param {object} res -http response
+ */
 const deleteItem = (res, id) => {
   const item = items.find((element) => element.id == id);
   if (item) {
@@ -97,5 +117,7 @@ const deleteItem = (res, id) => {
     res.end('{"message": "Item not found."}');
   }
 };
+
+///comments
 
 export { items, getItems, getItemsById, postItem, deleteItem, updateItem };
