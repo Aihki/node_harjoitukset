@@ -125,14 +125,16 @@ const updateMedia = (req, res) => {
  */
 
 const deleteMedia = (req, res) => {
-  const media = mediaItems.find((element) => element.media_id == req.params.id);
+  const media = mediaItems.findIndex(
+    (element) => element.media_id == req.params.id
+  );
   console.log(media);
   if (media) {
     mediaItems.splice(mediaItems.indexOf(media), 1);
-    res.json(media);
+    res.status(204).send();
   } else {
-    res.status(404);
-    res.json({ message: "404 Media not found!" });
+    res.status(404).json({ message: "404 Media not found!" });
+  }
   }
 };
 
