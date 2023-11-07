@@ -189,7 +189,7 @@ const deleteUser = (req, res) => {
 
   if (user) {
     users.splice(users.indexOf(user), 1);
-    res.json(user);
+    res.status(204).send();
   } else {
     res.status(404);
     res.json({ message: "404 Media not found!" });
