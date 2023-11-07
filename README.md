@@ -1,4 +1,6 @@
 The endpoint that are used in this here and examples of them
+kuva media kansioista
+http://127.0.0.1:3000/media/scrum-harjoituksia.png
 
 ### GET /
 
