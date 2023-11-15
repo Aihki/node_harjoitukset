@@ -9,11 +9,9 @@ import {
 
 const mediaRouter = express.Router();
 
+mediaRouter.route("/").get(getMediaItems).post(postMedia);
 mediaRouter
-  .route("/api/media")
-  .get(getMediaItems)
-  .post(postMedia)
-  .route("/api/media/:id")
+  .route("/:id")
   .get(getMediaById)
   .put(updateMedia)
   .delete(deleteMedia);
