@@ -57,8 +57,8 @@ const getUserById = (req, res) => {
  */
 
 const postUser = (req, res) => {
-  console.log("new media posted", req.body);
-  if (req.body) {
+  console.log("new user made", req.body);
+  if (req.body.username && req.body.password && req.body.email) {
     users.push({
       user_id: req.body.user_id,
       username: req.body.username,
@@ -103,7 +103,7 @@ const deleteUser = (req, res) => {
 
   if (user) {
     users.splice(users.indexOf(user), 1);
-    res.json(user);
+    res.status(204).send();
   } else {
     res.status(404);
     res.json({ message: "404 Media not found!" });

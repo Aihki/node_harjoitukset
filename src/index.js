@@ -1,21 +1,14 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import { getItems, getItemsById, postItem } from "./items.js";
-import {
-  getMediaItems,
-  getMediaById,
-  postMedia,
-  updateMedia,
-  deleteMedia,
-} from "./media.js";
 import {
   deleteUser,
   getUserById,
   getUsers,
   postUser,
   updateUser,
-} from "./users.js";
+} from "./controllers/users-controller.mjs";
+import mediaRouter from "./routes/media-Router.mjs";
 
 const hostname = "127.0.0.1";
 const app = express();
@@ -53,24 +46,13 @@ app.get("/:message", (req, res) => {
 
 ///example generic items api
 //get all items
-app.get("/api/items", getItems);
-app.get("/api/media", getMediaItems);
+
+app.use("/api/media", mediaRouter);
+
 app.get("/api/user", getUsers);
-///get item by id
-app.get("/api/items/:id", getItemsById);
-app.get("/api/media/:id", getMediaById);
 app.get("/api/user/:id", getUserById);
-///edit
-app.put("/api/items");
-app.put("/api/media/:id", updateMedia);
 app.put("/api/user/:id", updateUser);
-///add new item
-app.post("/api/items", postItem);
-app.post("/api/media", postMedia);
 app.post("/api/user", postUser);
-///delete item
-app.delete("/api/items");
-app.delete("/api/media/:id", deleteMedia);
 app.delete("/api/user/:id", deleteUser);
 
 app.listen(port, hostname, () => {
