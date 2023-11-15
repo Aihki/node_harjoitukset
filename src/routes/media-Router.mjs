@@ -8,8 +8,10 @@ import {
 } from "../controllers/media-controller.mjs";
 
 const mediaRouter = express.Router();
-
+//routes for /api/media
 mediaRouter.route("/").get(getMediaItems).post(postMedia);
+
+//routes for /api/media/:id
 mediaRouter
   .route("/:id")
   .get(getMediaById)
