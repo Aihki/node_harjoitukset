@@ -84,7 +84,10 @@ const getMediaById = (req, res) => {
  */
 
 const postMedia = (req, res) => {
+  console.log("uploaded file", req.file);
   console.log("new media posted", req.body);
+  const { title, description, user_id } = req.body;
+  const { filename, mimetype, media_size } = req.file;
   if (req.body) {
     mediaItems.push({
       filename: req.body.filename,

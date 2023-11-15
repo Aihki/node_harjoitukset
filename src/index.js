@@ -17,7 +17,8 @@ app.set("views", "src/views");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/docs", express.static(path.join(__dirname, "../docs")));
-app.use("/media", express.static(path.join(__dirname, "../media")));
+
+app.use("/media", express.static(path.join(__dirname, "../uploads")));
 
 app.use(logger);
 

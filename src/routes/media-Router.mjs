@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import {
   deleteMedia,
   getMediaById,
@@ -9,8 +10,13 @@ import {
 import { logger } from "../middlewares/middlewares.mjs";
 
 const mediaRouter = express.Router();
+const upload = multer({ dest: "uploads/" });
+
 //routes for /api/media
-mediaRouter.route("/").get(getMediaItems).post(postMedia);
+mediaRouter
+  .route("/")
+  .get(getMediaItems)
+  .post(upload.single("file"), postMedia);
 
 ///router specific logger
 //mediaRouter.use(logger);
