@@ -49,7 +49,7 @@ DELETE http://127.0.0.1:3000/api/media/5
 GET http://127.0.0.1:3000/api/user/
 
 ### GET / api/user/:id
-GET http://127.0.0.1:3000/api/user/1
+GET http://127.0.0.1:3000/api/user/2
 
 
 
@@ -84,5 +84,14 @@ DELETE http://127.0.0.1:3000/api/user/4
 
 
 
-###get all comments
-GET http://127.0.0.1:3000/api/
+###get by media_id comments
+GET http://127.0.0.1:3000/api/likes/media/1
+
+###get by user_id comments
+GET http://127.0.0.1:3000/api/likes/user/1
+
+
+###delete by id comments
+DELETE http://127.0.0.1:3000/api/likes/2
+
+
