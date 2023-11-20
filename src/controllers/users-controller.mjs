@@ -1,115 +1,81 @@
-const users = [
-  {
-    user_id: 260,
-    username: "VCHar",
-    password: "********",
-    email: "vchar@example.com",
-    user_level_id: 1,
-    created_at: "2020-09-12T06:56:41.000Z",
-  },
-  {
-    user_id: 305,
-    username: "Donatello",
-    password: "********",
-    email: "dona@example.com",
-    user_level_id: 1,
-    created_at: "2021-12-11T06:00:41.000Z",
-  },
-  {
-    user_id: 3609,
-    username: "Anon5468",
-    password: "********",
-    email: "x58df@example.com",
-    user_level_id: 3,
-    created_at: "2023-04-02T05:56:41.000Z",
-  },
-];
-/**
- *Gets all users
- *
- * @param {object} req -http request
- * @param {object} res -http response
- */
+import {
+  addNewUser,
+  allUsers,
+  deleteUser,
+  updateUser,
+  userById,
+} from "../models/user-model.mjs";
 
-const getUsers = (req, res) => {
-  res.json(users);
-};
-/**
- *Gets user by its id
- *
- * @param {object} req -http request
- * @param {object} res -http response
- */
-const getUserById = (req, res) => {
-  const user = users.find((element) => element.user_id == req.params.id);
-  if (user) {
-    res.json(user);
+const listOfAllUsers = async (req, res) => {
+  const users = await allUsers();
+  if (!users.error) {
+    res.json(users);
   } else {
-    res.status(404);
-    res.json({ message: "404 Media not found!" });
+    res.status(500);
+    res.json({ users });
   }
 };
-/**
- *creates new user
- *
- * @param {object} req -http request
- * @param {object} res -http response
- */
 
-const postUser = (req, res) => {
-  console.log("new user made", req.body);
-  if (req.body.username && req.body.password && req.body.email) {
-    users.push({
-      user_id: req.body.user_id,
-      username: req.body.username,
-      password: req.body.password,
-      email: req.body.email,
-      user_level_id: req.body.user_level_id,
-      created_at: req.body.created_at,
-    });
-    res.sendStatus(201);
+const userByItsId = async (req, res) => {
+  const user = await userById(req.params.id);
+  if (!user.error) {
+    res.json(user);
+  } else {
+    res.sendStatus(404);
+  }
+};
+
+const newUser = async (req, res) => {
+  const { username, password, email, user_level_id } = req.body;
+  if (username && password && email && user_level_id) {
+    const user = await addNewUser({ username, password, email, user_level_id });
+    if (!user.error) {
+      res.status(201);
+      res.json(user);
+    } else {
+      res.sendStatus(400);
+    }
+  }
+};
+
+const putUser = async (req, res) => {
+  const { id } = req.params;
+  const { username, password, email } = req.body;
+
+  if (id && username && password && email) {
+    // TODO: add error handling when database error occurs
+    const updatedUser = { username, password, email };
+    const result = await updateUser (id, updatedUser);
+
+    if (result) {
+      if (result.error) {
+        res.status(500).json(result);
+      }
+      res.json(result);
+    } else {
+      res.status(404).json({ error: "Not Found", user_id: id });
+    }
   } else {
     res.sendStatus(400);
   }
 };
 
-/**
- *this upadtes existing user
- *
- * @param {object} req -http request
- * @param {object} res -http response
- */
-const updateUser = (req, res) => {
-  const user = users.find((element) => element.user_id == req.params.id);
-  if (user) {
-    user.username = req.body.username;
-    user.password = req.body.password;
-    user.email = req.body.email;
-    res.json(user);
+const removeUser = async (req, res) => {
+  const { id } = req.params;
+  if (id) {
+    const result = await deleteUser(id);
+    if (result) {
+      if (result.error) {
+        res.status(500);
+      }
+      res.json(result);
+    } else {
+      res.status(404);
+      res.json({ error: "Not Found", user_id: id });
+    }
   } else {
-    res.status(404);
-    res.json({ message: "404 Media not found!" });
+    res.sendStatus(400);
   }
 };
 
-/**
- *deletes user by its id
- *
- * @param {object} req -http request
- * @param {object} res -http response
- */
-const deleteUser = (req, res) => {
-  const user = users.find((element) => element.user_id == req.params.id);
-
-  if (user) {
-    users.splice(users.indexOf(user), 1);
-    res.status(204).send();
-  } else {
-    res.status(404);
-    res.json({ message: "404 Media not found!" });
-  }
-};
-
-//comments
-
-export { getUsers, getUserById, postUser, updateUser, deleteUser };
+export { listOfAllUsers, userByItsId, newUser, putUser, removeUser };

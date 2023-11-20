@@ -1,11 +1,11 @@
 import express from "express";
 import multer from "multer";
 import {
-  deleteMedia,
-  getMediaById,
-  getMediaItems,
-  postMedia,
-  updateMedia,
+  fullListOfMedia,
+  mediaByItsId,
+  newMedia,
+  putMedia,
+  removeMedia,
 } from "../controllers/media-controller.mjs";
 import { logger } from "../middlewares/middlewares.mjs";
 
@@ -15,17 +15,13 @@ const upload = multer({ dest: "uploads/" });
 //routes for /api/media
 mediaRouter
   .route("/")
-  .get(getMediaItems)
-  .post(upload.single("file"), postMedia);
+  .get(fullListOfMedia)
+  .post(upload.single("file"), newMedia);
 
 ///router specific logger
 //mediaRouter.use(logger);
 
 //routes for /api/media/:id
-mediaRouter
-  .route("/:id")
-  .get(getMediaById)
-  .put(updateMedia)
-  .delete(deleteMedia);
+mediaRouter.route("/:id").get(mediaByItsId).put(putMedia).delete(removeMedia);
 
 export default mediaRouter;

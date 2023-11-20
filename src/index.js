@@ -2,8 +2,9 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import usersRouter from "./routes/users-router.mjs";
-import mediaRouter from "./routes/media-Router.mjs";
 import { logger } from "./middlewares/middlewares.mjs";
+import commentsRouter from "./routes/like-router.mjs";
+import mediaRouter from "./routes/media-router.mjs";
 
 const hostname = "127.0.0.1";
 const app = express();
