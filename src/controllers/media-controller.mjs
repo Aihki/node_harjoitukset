@@ -1,3 +1,4 @@
+import { json } from "express";
 import {
   addNewMedia,
   allMedia,
@@ -5,6 +6,13 @@ import {
   mediaById,
   updateMedia,
 } from "../models/media-model.mjs";
+
+/**
+ * Retrieves a list of all media.
+ * @param {object} req - The request object.
+ * @param {object} res - The response object.
+ * @returns {object} - A list of all media.
+ */
 
 const fullListOfMedia = async (req, res) => {
   const media = await allMedia();
@@ -15,6 +23,13 @@ const fullListOfMedia = async (req, res) => {
     res.json(media);
   }
 };
+
+/**
+ * Retrieves a media by its id.
+ * @param {object} req - The request object.
+ * @param {object} res - The response object.
+ * @returns {object} - A media.
+ */
 
 const mediaByItsId = async (req, res) => {
   const media = await mediaById(req.params.id);
@@ -29,59 +44,90 @@ const mediaByItsId = async (req, res) => {
   }
 };
 
+/**
+ * adds a new media.
+ * @param {object} req - The request object.
+ * @param {object} res - The response object.
+ * @returns {object} - new media.
+ */
+
 const newMedia = async (req, res) => {
   const { user_id, description, title } = req.body;
   const { filename, mimetype, size } = req.file;
   if (user_id && title && filename) {
-    const newMedia = {
-      user_id,
-      description,
-      title,
-      filename,
-      mimetype,
-      size,
-    };
-    const addMedia = await addNewMedia(newMedia);
-    res.status(201);
-    res.json({ message: "New media has be added", ...addMedia });
-  } else {
-    res.sendStatus(400);
-  }
-};
-
-const putMedia = async (req, res) => {
-  const { id } = req.params;
-  const { filename, title, description } = req.body;
-
-  if (id && title && filename) {
-    const media = { filename, title, description };
-    const result = await updateMedia(id, media);
-
-    if (result) {
-      if (result.error) {
-        res.status(500).json(result);
-      }
-      res.json(result);
-    } else {
-      res.status(404).json({ error: "Not Found", media_id: id });
+    try {
+      const newMedia = {
+        user_id,
+        description,
+        title,
+        filename,
+        mimetype,
+        size,
+      };
+      const addMedia = await addNewMedia(newMedia);
+      res
+        .status(201)
+        .json({ message: "New media has been added", ...addMedia });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
   } else {
     res.sendStatus(400);
   }
 };
 
+/**
+ * Updates a media.
+ * @param {object} req - The request object.
+ * @param {object} res - The response object.
+ * @returns {object} - updated media.
+ */
+
+const putMedia = async (req, res) => {
+  const { id } = req.params;
+  const { filename, title, description } = req.body;
+
+  if (id && title && filename) {
+    try {
+      const media = { filename, title, description };
+      const result = await updateMedia(id, media);
+
+      if (result.error) {
+        res.status(500).json(result);
+      } else if (!result.message) {
+        res.status(404).json({ error: "Media not found", media_id: id });
+      } else {
+        res.json(result);
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  } else {
+    res.sendStatus(400);
+  }
+};
+
+/**
+ * Deletes a media.
+ * @param {object} req - The request object.
+ * @param {object} res - The response object.
+ * @returns {object} - deleted media.
+ */
+
 const removeMedia = async (req, res) => {
   const { id } = req.params;
   if (id) {
-    const result = await deleteMedia(id);
-    if (result) {
+    try {
+      const result = await deleteMedia(id);
       if (result.error) {
-        res.status(500);
+        res.status(500).json(result);
+      } else if (!result.message) {
+        res.status(404).json({ error: "Media not found", media_id: id });
+      } else {
+        res.json(result);
       }
-      res.json(result);
-    } else {
-      res.status(404);
-      res.json({ error: "Not Found", media_id: id });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
   } else {
     res.sendStatus(400);

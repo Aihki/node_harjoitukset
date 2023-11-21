@@ -29,7 +29,7 @@ Content-Type: image/jpeg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ### PUT / media/:id
-PUT http://127.0.0.1:3000/api/media/4
+PUT http://127.0.0.1:3000/api/media/1
 Content-Type: application/json
 
 {
@@ -67,7 +67,7 @@ Content-Type: application/json
 }
 
 ### PUT / api/user/:id
-PUT http://127.0.0.1:3000/api/user/1
+PUT http://127.0.0.1:3000/api/user/5
 Content-Type: application/json
 
 {
@@ -77,7 +77,7 @@ Content-Type: application/json
 }
 
 ### delete / api/user/:id
-DELETE http://127.0.0.1:3000/api/user/4
+DELETE http://127.0.0.1:3000/api/user/5
 
 
 

@@ -4,21 +4,32 @@ import {
   likeByUserId,
 } from "../models/like-model.mjs";
 
+/**
+ * get likes by media id.
+ * @param {object} req - The request object.
+ * @param {object} res - The response object.
+ * @returns {object} - likes.
+ */
 const mediaLikes = async (req, res) => {
   const likes = await likeByMediaId(req.params.id);
   if (!likes.error) {
     res.json(likes);
   } else {
-    res.sendStatus(404);
+    res.sendStatus(500);
   }
 };
-
+/**
+ * get likes by user id.
+ * @param {object} req - The request object.
+ * @param {object} res - The response object.
+ * @returns {object} - likes.
+ */
 const userLikes = async (req, res) => {
   const likes = await likeByUserId(req.params.id);
   if (!likes.error) {
     res.json(likes);
   } else {
-    res.sendStatus(404);
+    res.sendStatus(500);
   }
 };
 
@@ -34,18 +45,26 @@ const addNewLike = async (req, res) => {
   }
 };
 
+/**
+ * Deletes a like.
+ * @param {object} req - The request object.
+ * @param {object} res - The response object.
+ * @returns {object} - deleted like.
+ */
 const deleteLikeById = async (req, res) => {
   const { id } = req.params;
   if (id) {
-    const result = await deleteLike(id);
-    if (result) {
+    try {
+      const result = await deleteLike(id);
       if (result.error) {
-        res.status(500);
+        res.status(500).json(result);
+      } else if (!result.message) {
+        res.status(404).json({ error: "Like not found", like_id: id });
+      } else {
+        res.json(result);
       }
-      res.json(result);
-    } else {
-      res.status(404);
-      res.json({ error: "Not Found", like_id: id });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
   } else {
     res.sendStatus(400);
