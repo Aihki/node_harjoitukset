@@ -7,7 +7,6 @@ import { promisePool } from "../utils/database.mjs";
 const allMedia = async () => {
   try {
     const [rows] = await promisePool.query("SELECT * FROM MediaItems");
-    console.log(rows);
     return rows;
   } catch (error) {
     console.log(error, error.message);
@@ -93,8 +92,8 @@ const deleteMedia = async (id) => {
       ? { message: "Media item deleted." }
       : { error: "Not Found" };
   } catch (error) {
-    console.error("error", e.message);
-    return { error: e.message };
+    console.error("error", error.message);
+    return { error: error.message };
   }
 };
 

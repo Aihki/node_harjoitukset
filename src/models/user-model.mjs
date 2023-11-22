@@ -1,6 +1,25 @@
 import { promisePool } from "../utils/database.mjs";
 
 /**
+ * Fetch user from database by username and password
+ * @param {object}  credits- -contains username and password
+ * @returns
+ */
+const login = async (credits) => {
+  try {
+    const sql = `SELECT user_id, username, user_level_id, email 
+                FROM Users WHERE username = ? AND password = ?`;
+    const params = [credits.username, credits.password];
+    const result = await promisePool.query(sql, params);
+    const [rows] = result;
+    return rows[0];
+  } catch (error) {
+    console.log(error, error.message);
+    return { error: error.message };
+  }
+};
+
+/**
  * Retrieves all users from the database.
  * @returns {object} - A list of all users.
  */
@@ -92,9 +111,9 @@ const deleteUser = async (id) => {
       ? { message: "user  deleted." }
       : { error: "Not Found" };
   } catch (error) {
-    console.error("error", e.message);
-    return { error: e.message };
+    console.error("error", error.message);
+    return { error: error.message };
   }
 };
 
-export { allUsers, userById, addNewUser, updateUser, deleteUser };
+export { allUsers, userById, addNewUser, updateUser, deleteUser, login };

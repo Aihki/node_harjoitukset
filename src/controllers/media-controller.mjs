@@ -52,8 +52,9 @@ const mediaByItsId = async (req, res) => {
  */
 
 const newMedia = async (req, res) => {
-  const { user_id, description, title } = req.body;
+  const { description, title } = req.body;
   const { filename, mimetype, size } = req.file;
+  const user_id = req.user.user_id;
   if (user_id && title && filename) {
     try {
       const newMedia = {
@@ -84,18 +85,18 @@ const newMedia = async (req, res) => {
  */
 
 const putMedia = async (req, res) => {
-  const { id } = req.params;
+  const user_id = req.user.user_id;
   const { filename, title, description } = req.body;
 
-  if (id && title && filename) {
+  if (user_id && title && filename) {
     try {
       const media = { filename, title, description };
-      const result = await updateMedia(id, media);
+      const result = await updateMedia(user_id, media);
 
       if (result.error) {
         res.status(500).json(result);
       } else if (!result.message) {
-        res.status(404).json({ error: "Media not found", media_id: id });
+        res.status(404).json({ error: "Media not found", media_id: user_id });
       } else {
         res.json(result);
       }
@@ -115,14 +116,15 @@ const putMedia = async (req, res) => {
  */
 
 const removeMedia = async (req, res) => {
-  const { id } = req.params;
-  if (id) {
+  const user_id = req.user.user_id;
+  console.log(user_id);
+  if (user_id) {
     try {
-      const result = await deleteMedia(id);
+      const result = await deleteMedia(user_id);
       if (result.error) {
         res.status(500).json(result);
       } else if (!result.message) {
-        res.status(404).json({ error: "Media not found", media_id: id });
+        res.status(404).json({ error: "Media not found", media_id: user_id });
       } else {
         res.json(result);
       }

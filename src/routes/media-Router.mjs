@@ -8,6 +8,7 @@ import {
   removeMedia,
 } from "../controllers/media-controller.mjs";
 import { logger } from "../middlewares/middlewares.mjs";
+import { authenticateToken } from "../middlewares/authentication.mjs";
 
 const mediaRouter = express.Router();
 const upload = multer({ dest: "uploads/" });
@@ -16,12 +17,16 @@ const upload = multer({ dest: "uploads/" });
 mediaRouter
   .route("/")
   .get(fullListOfMedia)
-  .post(upload.single("file"), newMedia);
+  .post(authenticateToken, upload.single("file"), newMedia);
 
 ///router specific logger
 //mediaRouter.use(logger);
 
 //routes for /api/media/:id
-mediaRouter.route("/:id").get(mediaByItsId).put(putMedia).delete(removeMedia);
+mediaRouter
+  .route("/:id")
+  .get(mediaByItsId)
+  .put(authenticateToken, putMedia)
+  .delete(authenticateToken, removeMedia);
 
 export default mediaRouter;

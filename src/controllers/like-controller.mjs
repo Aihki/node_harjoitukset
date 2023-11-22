@@ -52,14 +52,14 @@ const addNewLike = async (req, res) => {
  * @returns {object} - deleted like.
  */
 const deleteLikeById = async (req, res) => {
-  const { id } = req.params;
-  if (id) {
+  const user_id = req.user.user_id;
+  if (user_id) {
     try {
-      const result = await deleteLike(id);
+      const result = await deleteLike(user_id);
       if (result.error) {
         res.status(500).json(result);
       } else if (!result.message) {
-        res.status(404).json({ error: "Like not found", like_id: id });
+        res.status(404).json({ error: "Like not found", like_id: user_id });
       } else {
         res.json(result);
       }

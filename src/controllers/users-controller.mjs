@@ -77,18 +77,18 @@ const newUser = async (req, res) => {
  */
 
 const putUser = async (req, res) => {
-  const { id } = req.params;
+  const user_id = req.user.user_id;
   const { username, password, email } = req.body;
 
-  if (id && username && password && email) {
+  if (user_id && username && password && email) {
     try {
       const updatedUser = { username, password, email };
-      const result = await updateUser(id, updatedUser);
+      const result = await updateUser(user_id, updatedUser);
 
       if (result.error) {
         res.status(500).json(result);
       } else if (result.message === "Not Found") {
-        res.status(404).json({ error: "Not Found", user_id: id });
+        res.status(404).json({ error: "Not Found", user_id: user_id });
       } else {
         res.json(result);
       }
@@ -108,14 +108,14 @@ const putUser = async (req, res) => {
  */
 
 const removeUser = async (req, res) => {
-  const { id } = req.params;
-  if (id) {
+  const user_id = req.user.user_id;
+  if (user_id) {
     try {
-      const result = await deleteUser(id);
+      const result = await deleteUser(user_id);
       if (result.error) {
         res.status(500).json(result);
       } else if (result.message === "Not Found") {
-        res.status(404).json({ error: "Not Found", user_id: id });
+        res.status(404).json({ error: "Not Found", user_id: user_id });
       } else {
         res.json(result);
       }

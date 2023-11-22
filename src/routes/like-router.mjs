@@ -4,6 +4,7 @@ import {
   mediaLikes,
   userLikes,
 } from "../controllers/like-controller.mjs";
+import { authenticateToken } from "../middlewares/authentication.mjs";
 
 const likeRouter = express.Router();
 
@@ -13,6 +14,6 @@ likeRouter.route("/media/:id").get(mediaLikes);
 likeRouter.route("/user/:id").get(userLikes);
 
 ///delete like by id /api/likes/:id
-likeRouter.route("/:id").delete(deleteLikeById);
+likeRouter.route("/:id").delete(authenticateToken, deleteLikeById);
 
 export default likeRouter;

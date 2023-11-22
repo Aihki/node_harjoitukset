@@ -6,6 +6,7 @@ import {
   removeUser,
   userByItsId,
 } from "../controllers/users-controller.mjs";
+import { authenticateToken } from "../middlewares/authentication.mjs";
 
 const usersRouter = express.Router();
 
@@ -13,6 +14,10 @@ const usersRouter = express.Router();
 usersRouter.route("/").get(listOfAllUsers).post(newUser);
 
 ///routes for /api/users/:id
-usersRouter.route("/:id").get(userByItsId).put(putUser).delete(removeUser);
+usersRouter
+  .route("/:id")
+  .get(userByItsId)
+  .put(authenticateToken, putUser)
+  .delete(authenticateToken, removeUser);
 
 export default usersRouter;

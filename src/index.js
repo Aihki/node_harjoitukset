@@ -5,6 +5,7 @@ import usersRouter from "./routes/users-router.mjs";
 import { logger } from "./middlewares/middlewares.mjs";
 import mediaRouter from "./routes/media-router.mjs";
 import likeRouter from "./routes/like-router.mjs";
+import authRouter from "./routes/auth-router.mjs";
 
 const hostname = "127.0.0.1";
 const app = express();
@@ -36,6 +37,8 @@ app.use("/api/media", mediaRouter);
 app.use("/api/user", usersRouter);
 
 app.use("/api/likes", likeRouter);
+
+app.use("/api/auth", authRouter);
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
