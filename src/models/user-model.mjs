@@ -52,24 +52,21 @@ const userById = async (id) => {
 };
 
 /**
- * Adds a new user to the database.
- * @param {object} user - The user object to add.
- * @param {string} user.username - The username of the new user.
- * @param {string} user.password - The password of the new user.
- * @param {string} user.email - The email of the new user.
- * @param {number} user.user_level_id - The user's level ID.
- * @returns {object} - new user.
+ * Creates a new user in the database
+ *
+ * @param {object} user data
+ * @returns {number} - id of the inserted user in db
  */
 const addNewUser = async (user) => {
-  const { username, password, email, user_level_id } = user;
-  const sql = `INSERT INTO Users (username, password, email, user_level_id) VALUES (?,?,?,?)`;
-  const params = [username, password, email, user_level_id];
   try {
-    const rows = await promisePool.query(sql, params);
-    return { user_id: rows[0].insertId };
-  } catch (error) {
-    console.log(error, error.message);
-    return { error: error.message };
+    const sql = `INSERT INTO Users (username, email, password, user_level_id)
+                VALUES (?, ?, ?, ?)`;
+    const params = [user.username, user.email, user.password, 2];
+    const result = await promisePool.query(sql, params);
+    return result[0].insertId;
+  } catch (e) {
+    console.error("error", e.message);
+    return { error: e.message };
   }
 };
 

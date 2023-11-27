@@ -1,3 +1,4 @@
+import { validationResult } from "express-validator";
 import {
   addNewUser,
   allUsers,
@@ -51,22 +52,13 @@ const userByItsId = async (req, res) => {
  */
 
 const newUser = async (req, res) => {
-  const { username, password, email, user_level_id } = req.body;
-  if (username && password && email && user_level_id) {
-    try {
-      const user = await addNewUser({
-        username,
-        password,
-        email,
-        user_level_id,
-      });
-      res.status(201).json(user);
-    } catch (error) {
-      res.status(400).send(error.message);
-    }
-  } else {
-    res.sendStatus(400);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    return res.status(400).json({ message: "Invalid data" });
   }
+  const user = await addNewUser(req.body);
+  res.status(201).json({ message: "User created", user_id: user });
 };
 
 /**
@@ -76,28 +68,15 @@ const newUser = async (req, res) => {
  * @returns {object} - updated user.
  */
 
-const putUser = async (req, res) => {
+const putUser = async (req, res, next) => {
   const user_id = req.user.user_id;
-  const { username, password, email } = req.body;
-
-  if (user_id && username && password && email) {
-    try {
-      const updatedUser = { username, password, email };
-      const result = await updateUser(user_id, updatedUser);
-
-      if (result.error) {
-        res.status(500).json(result);
-      } else if (result.message === "Not Found") {
-        res.status(404).json({ error: "Not Found", user_id: user_id });
-      } else {
-        res.json(result);
-      }
-    } catch (error) {
-      res.status(500).send(error.message);
-    }
-  } else {
-    res.sendStatus(400);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    return res.status(400).json({ message: "Invalid data" });
   }
+  const result = await updateUser(user_id, req.body);
+  res.status(201).json({ message: "User updated", user_id: result });
 };
 
 /**

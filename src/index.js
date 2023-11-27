@@ -2,7 +2,11 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import usersRouter from "./routes/users-router.mjs";
-import { logger } from "./middlewares/middlewares.mjs";
+import {
+  errorHandler,
+  logger,
+  notFoundHandler,
+} from "./middlewares/middlewares.mjs";
 import mediaRouter from "./routes/media-router.mjs";
 import likeRouter from "./routes/like-router.mjs";
 import authRouter from "./routes/auth-router.mjs";
@@ -39,6 +43,10 @@ app.use("/api/user", usersRouter);
 app.use("/api/likes", likeRouter);
 
 app.use("/api/auth", authRouter);
+
+///rest of the routes = error  handling
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);

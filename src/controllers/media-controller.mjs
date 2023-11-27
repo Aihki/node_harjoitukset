@@ -6,6 +6,7 @@ import {
   mediaById,
   updateMedia,
 } from "../models/media-model.mjs";
+import { validationResult } from "express-validator";
 
 /**
  * Retrieves a list of all media.
@@ -51,29 +52,40 @@ const mediaByItsId = async (req, res) => {
  * @returns {object} - new media.
  */
 
-const newMedia = async (req, res) => {
+const newMedia = async (req, res, next) => {
+  /*   if (!req.file) {
+    const error = new Error(
+      "Incomplete, the task is. No files to add, there were."
+    );
+    error.status = 400;
+    return next(error);
+  } */
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log("error in validation", errors.array());
+    const error = new Error("Invalid, the data is.");
+    error.status = 400;
+    return next(error);
+  }
   const { description, title } = req.body;
   const { filename, mimetype, size } = req.file;
   const user_id = req.user.user_id;
-  if (user_id && title && filename) {
-    try {
-      const newMedia = {
-        user_id,
-        description,
-        title,
-        filename,
-        mimetype,
-        size,
-      };
-      const addMedia = await addNewMedia(newMedia);
-      res
-        .status(201)
-        .json({ message: "New media has been added", ...addMedia });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+  try {
+    const newMedia = {
+      user_id,
+      description,
+      title,
+      filename,
+      mimetype,
+      size,
+    };
+    const addMedia = await addNewMedia(newMedia);
+    if (addMedia.error) {
+      return next(new Error(error.message));
     }
-  } else {
-    res.sendStatus(400);
+    res.status(201).json({ message: "New media has been added", ...addMedia });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -84,27 +96,26 @@ const newMedia = async (req, res) => {
  * @returns {object} - updated media.
  */
 
-const putMedia = async (req, res) => {
+const putMedia = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log("error in validation", errors.array());
+    const error = new Error("Invalid, the data is.");
+    error.status = 400;
+    return next(error);
+  }
   const user_id = req.user.user_id;
   const { filename, title, description } = req.body;
 
-  if (user_id && title && filename) {
-    try {
-      const media = { filename, title, description };
-      const result = await updateMedia(user_id, media);
-
-      if (result.error) {
-        res.status(500).json(result);
-      } else if (!result.message) {
-        res.status(404).json({ error: "Media not found", media_id: user_id });
-      } else {
-        res.json(result);
-      }
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+  try {
+    const media = { filename, title, description };
+    const result = await updateMedia(user_id, media);
+    if (result.error) {
+      return next(new Error(error.message));
     }
-  } else {
-    res.sendStatus(400);
+    res.status(201).json({ message: "Media has been updated", ...result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
