@@ -19,6 +19,7 @@ const __dirname = path.dirname(__filename);
 
 app.set("view engine", "pug");
 app.set("views", "src/views");
+app.disable("x-powered-by");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

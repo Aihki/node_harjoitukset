@@ -5,16 +5,16 @@ import { promisePool } from "../utils/database.mjs";
  * @param {object}  credits- -contains username and password
  * @returns
  */
-const login = async (credits) => {
+const login = async (username) => {
   try {
-    const sql = `SELECT user_id, username, user_level_id, email 
-                FROM Users WHERE username = ? AND password = ?`;
-    const params = [credits.username, credits.password];
+    const sql = `SELECT user_id, username,password, user_level_id, email 
+                FROM Users WHERE username = ? `;
+    const params = [username];
     const result = await promisePool.query(sql, params);
     const [rows] = result;
     return rows[0];
   } catch (error) {
-    console.log(error, error.message);
+    console.log("error", error.message);
     return { error: error.message };
   }
 };
@@ -54,7 +54,7 @@ const userById = async (id) => {
 /**
  * Creates a new user in the database
  *
- * @param {object} user data
+ * @param {object} -user data
  * @returns {number} - id of the inserted user in db
  */
 const addNewUser = async (user) => {

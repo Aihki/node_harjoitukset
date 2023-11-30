@@ -6,6 +6,7 @@ import {
   updateUser,
   userById,
 } from "../models/user-model.mjs";
+import bcrupt from "bcryptjs";
 
 /**
  * Retrieves a list of all users.
@@ -57,7 +58,10 @@ const newUser = async (req, res) => {
     console.log(errors.array());
     return res.status(400).json({ message: "Invalid data" });
   }
-  const user = await addNewUser(req.body);
+  const newUser = req.body;
+  const salt = await bcrupt.genSalt(10);
+  newUser.password = await bcrupt.hash(newUser.password, salt);
+  const user = await addNewUser(newUser);
   res.status(201).json({ message: "User created", user_id: user });
 };
 
