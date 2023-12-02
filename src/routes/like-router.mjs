@@ -56,6 +56,8 @@ likeRouter.route("/media/:id").get(mediaLikes);
  * @apiGroup Likes
  * @apiPermission all
  * @apiDescription Get likes by user id.
+ *
+ *
  * @apiSuccess {Object[]} likes List of likes.
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
@@ -69,6 +71,13 @@ likeRouter.route("/media/:id").get(mediaLikes);
  * },
  *
  *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 404 Not Found
+ * {
+ * "error": {
+ * "message": "No likes found",
+ * "status": 404
+ * }
  *
  */
 
@@ -95,6 +104,15 @@ likeRouter.route("/user/:id").get(userLikes);
  * "media_id": 1,
  * "created_at": "2021-08-31T11:27:58.000Z",
  * },
+ * }
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 404 Not Found
+ * {
+ * "error": {
+ * "message": "Like not found",
+ * "status": 404
+ * }
  * }
  */
 likeRouter.route("/:id").delete(authenticateToken, deleteLikeById);

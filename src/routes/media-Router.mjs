@@ -51,6 +51,26 @@ const mediaRouter = express.Router();
  *
  */
 
+/**
+ * @api {post} /api/media Create a new media
+ * @apiVersion 1.0.0
+ * @apiName PostMedia
+ * @apiGroup Media
+ * @apiPermission token
+ *
+ * @apiDescription Create a new media.
+ *
+ * @apiParam {String} title Title of the media.
+ * @apiParam {String} description Description of the media.
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *    "title": "A beautiful picture",
+ *   "description": "A beautiful picture",
+ * }
+ *
+ */
+
 mediaRouter
   .route("/")
   .get(fullListOfMedia)
@@ -101,6 +121,45 @@ mediaRouter
  * }
  *
  *
+ *
+ */
+/**
+ * @api {put} /api/media/:id Update media information
+ * @apiVersion 1.0.0
+ * @apiName PutMedia
+ * @apiGroup Media
+ * @apiPermission token
+ * @apiDescription Update media information.
+ *
+ * @apiParam {Number} id Media unique ID.
+ * @apiParam {String} title Title of the media.
+ * @apiParam {String} description Description of the media.
+ * @apiParam {String} filename Filename of the media.
+ *
+ * @apiParamExample {json} Request-Example:
+ * {
+ * "title": "A beautiful picture",
+ * "description": "A beautiful picture",
+ * "filename": "a-beautiful-picture.jpg",
+ * }
+ *
+ */
+
+/**
+ * @api {delete} /api/media/:id Delete media
+ * @apiVersion 1.0.0
+ * @apiName DeleteMedia
+ * @apiGroup Media
+ * @apiPermission token
+ * @apiDescription Delete media.
+ *
+ * @apiParam {Number} id Media unique ID.
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+ * {
+ * "message": "Media deleted"
+ * }
  *
  */
 mediaRouter

@@ -50,6 +50,19 @@ const usersRouter = express.Router();
  * }
  *
  */
+/**
+ * @api {post} /api/users Create a new user
+ * @apiVersion 1.0.0
+ * @apiName PostUser
+ * @apiGroup Users
+ * @apiPermission all
+ *
+ * @apiDescription Create a new user.
+ *
+ * @apiParam {String} username Username of the user.
+ * @apiParam {String} password Password of the user.
+ * @apiParam {String} email Email of the user.
+ */
 
 usersRouter
   .route("/")
@@ -70,13 +83,8 @@ usersRouter
  * @apiGroup Users
  * @apiPermission all
  * @apiDescription Get a user by its id.
- * @apiParam {Number} id The users-ID.
- * @apiSuccess {Object} user User info.
- * @apiSuccess {Number} user.user_id Id of the User.
- * @apiSuccess {String} user.username Username of the User.
- * @apiSuccess {String} user.email Email of the User.
- * @apiSuccess {Number} user.user_level_id User level id of the User.
- * @apiSuccessExample Success-Response:
+
+
  * HTTP/1.1 200 OK
  * {
  * "user": {
@@ -94,6 +102,35 @@ usersRouter
  * "status": 404
  * }
  *
+ *
+ */
+/**
+ * @api {put} /api/users/:id Update a user by its id
+ * @apiVersion 1.0.0
+ * @apiName PutUserById
+ * @apiGroup Users
+ * @apiPermission token
+ *
+ * @apiDescription Update a user by its id.
+ *
+ * @apiParam {String} username Username of the user.
+ * @apiParam {String} password Password of the user.
+ * @apiParam {String} email Email of the user.
+ */
+/**
+ * @api {delete} /api/users/:id Delete a user by its id
+ * @apiVersion 1.0.0
+ * @apiName DeleteUserById
+ * @apiGroup Users
+ * @apiPermission token
+ *
+ * @apiDescription Delete a user by its id.
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+ * {
+ * "message": "user  deleted."
+ * }
  *
  */
 usersRouter
