@@ -34,6 +34,9 @@ const likeRouter = express.Router();
  * "media_id": 1,
  * "created_at": "2021-08-31T11:27:58.000Z",
  * },
+ * ]
+ * }
+ *
  *
  *
  * @apiErrorExample Error-Response:
@@ -69,6 +72,7 @@ likeRouter.route("/media/:id").get(mediaLikes);
  * "media_id": 1,
  * "created_at": "2021-08-31T11:27:58.000Z",
  * },
+ * ]}
  *
  *
  * @apiErrorExample Error-Response:
@@ -77,6 +81,7 @@ likeRouter.route("/media/:id").get(mediaLikes);
  * "error": {
  * "message": "No likes found",
  * "status": 404
+ * }
  * }
  *
  */

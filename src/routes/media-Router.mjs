@@ -19,6 +19,7 @@ const mediaRouter = express.Router();
  * @apiName GetMedia
  * @apiGroup Media
  * @apiPermission all
+ * @apiheader {String} Authorization Bearer token.
  *
  * @apiDescription Get all media.
  *
@@ -39,6 +40,8 @@ const mediaRouter = express.Router();
  *        "description": "A beautiful picture",
  *  "created_at": "2021-08-31T11:27:58.000Z",
  * },
+ *}]}
+ *
  *
  *
  * @apiErrorExample Error-Response:
@@ -48,6 +51,7 @@ const mediaRouter = express.Router();
  *     "message": "No media found",
  *    "status": 404
  *  }
+ * }
  *
  */
 
@@ -57,6 +61,7 @@ const mediaRouter = express.Router();
  * @apiName PostMedia
  * @apiGroup Media
  * @apiPermission token
+ * @apiHeader {String} Authorization Bearer token.
  *
  * @apiDescription Create a new media.
  *
@@ -68,6 +73,31 @@ const mediaRouter = express.Router();
  *    "title": "A beautiful picture",
  *   "description": "A beautiful picture",
  * }
+ * @apiSuccess {Object} media Media info.
+ * @apiSuccessExample Success-Response:
+ *  HTTP/1.1 200 OK
+ * {
+ * "media": {
+ * "media_id": 1,
+ * "user_id": 1,
+ * "filename": "a-beautiful-picture.jpg",
+ * "filesize": 1000,
+ * "media_type": "image/jpeg",
+ * "title": "A beautiful picture",
+ * "description": "A beautiful picture",
+ * "created_at": "2021-08-31T11:27:58.000Z",
+ * }
+ * }
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 404 Not Found
+ * {
+ * "error": {
+ * "message": "No media found",
+ * "status": 404
+ * }
+ * }
+ *
  *
  */
 
@@ -93,7 +123,10 @@ mediaRouter
  * @apiName GetMediaById
  * @apiGroup Media
  * @apiPermission all
- * @apiDescription Request media information.
+ * @apiDescription Request media information
+ * @apiheader {String} all
+ *
+ *
  * @apiParam {Number} id Media unique ID.
  *
  * @apiSuccess {Object} media Media info.
@@ -111,6 +144,7 @@ mediaRouter
  * "description": "A beautiful picture",
  * "created_at": "2021-08-31T11:27:58.000Z",
  * }
+ * }
  *
  * @apiErrorExample Error-Response:
  * HTTP/1.1 404 Not Found
@@ -118,6 +152,7 @@ mediaRouter
  * "error": {
  *  "we didnt find that media item you where looking for"
  * "status": 404
+ * }
  * }
  *
  *
@@ -129,6 +164,8 @@ mediaRouter
  * @apiName PutMedia
  * @apiGroup Media
  * @apiPermission token
+ *
+ * @apiHeader {String} Authorization Bearer token.
  * @apiDescription Update media information.
  *
  * @apiParam {Number} id Media unique ID.
@@ -143,6 +180,32 @@ mediaRouter
  * "filename": "a-beautiful-picture.jpg",
  * }
  *
+ * @apiSuccess {Object} media Media info.
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+ * {
+ * "media": {
+ * "media_id": 1,
+ * "user_id": 1,
+ * "filename": "a-beautiful-picture.jpg",
+ * "filesize": 1000,
+ * "media_type": "image/jpeg",
+ * "title": "A beautiful picture",
+ * "description": "A beautiful picture",
+ * "created_at": "2021-08-31T11:27:58.000Z",
+ * }
+ * }
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 404 Not Found
+ * {
+ * "error": {
+ * "message": "No media found",
+ * "status": 404
+ * }
+ * }
+ *
+ *
  */
 
 /**
@@ -152,6 +215,7 @@ mediaRouter
  * @apiGroup Media
  * @apiPermission token
  * @apiDescription Delete media.
+ * @apiHeader {String} Authorization Bearer token.
  *
  * @apiParam {Number} id Media unique ID.
  *
@@ -160,6 +224,19 @@ mediaRouter
  * {
  * "message": "Media deleted"
  * }
+ *
+ *
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 404 Not Found
+ * {
+ * "error": {
+ * "message": "Media not found",
+ * "status": 404
+ * }
+ * }
+ *
+ *
  *
  */
 mediaRouter

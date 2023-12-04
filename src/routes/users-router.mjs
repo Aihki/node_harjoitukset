@@ -11,7 +11,6 @@ import { body } from "express-validator";
 
 const usersRouter = express.Router();
 
-///routes for /api/users
 /**
  * @api {get} /api/users Get all users
  * @apiVersion 1.0.0
@@ -22,46 +21,86 @@ const usersRouter = express.Router();
  * @apiDescription Get all users.
  *
  * @apiSuccess {Object[]} users List of users.
- *
+ * @apiSuccess {Number} users.user_id User ID.
+ * @apiSuccess {String} users.username Username.
+ * @apiSuccess {String} users.email User's email.
+ * @apiSuccess {Number} users.user_level_id User level ID.
  *
  * @apiSuccessExample Success-Response:
  *  HTTP/1.1 200 OK
  * {
- * "users": [
- *  {
- *   "user_id": 1,
- *  "username": "yoda",
- * "email": "
- * "user_level_id": 2
- * },
- * {
- * "user_id": 2,
- * "username": "obiwan",
- * "email": "
- * "user_level_id": 2
- * },
+ *   "users": [
+ *     {
+ *       "user_id": 1,
+ *       "username": "yoda",
+ *       "email": "yoda@example.com",
+ *       "user_level_id": 2
+ *     },
+ *     {
+ *       "user_id": 2,
+ *       "username": "obiwan",
+ *       "email": "obiwan@example.com",
+ *       "user_level_id": 2
+ *     }
+ *   ]
+ * }
  *
  * @apiErrorExample Error-Response:
  *   HTTP/1.1 404 Not Found
  * {
- * "error": {
- * "message": "No users found",
- * "status": 404
+ *   "error": {
+ *     "message": "No users found",
+ *     "status": 404
+ *   }
  * }
- *
  */
-/**
- * @api {post} /api/users Create a new user
+
+/** @api {post} /api/users Create a new user
  * @apiVersion 1.0.0
  * @apiName PostUser
  * @apiGroup Users
  * @apiPermission all
- *
+ * @apiHeader all
  * @apiDescription Create a new user.
  *
  * @apiParam {String} username Username of the user.
  * @apiParam {String} password Password of the user.
  * @apiParam {String} email Email of the user.
+ *
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  "username": "yoda",
+ * "password": "yoda123456789",
+ * "email": "
+ * }
+ *
+ *@apiSuccess {Object} user User object.
+ * @apiSuccess {Number} user.user_id User ID.
+ * @apiSuccess {String} user.username Username.
+ * @apiSuccess {String} user.email User's email.
+ * @apiSuccess {Number} user.user_level_id User level ID.
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+ * {
+ *  "user": {
+ *  "user_id": 1,
+ * "username": "yoda",
+ * "email": "
+ * "user_level_id": 2
+ * }
+ * }
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 400 Bad Request
+ * {
+ * "error": {
+ * "message": "Username already exists",
+ * "status": 400
+ * }
+ * }
+ *
+ *
  */
 
 usersRouter
@@ -83,8 +122,61 @@ usersRouter
  * @apiGroup Users
  * @apiPermission all
  * @apiDescription Get a user by its id.
+ *
+ * @apiSuccess {Object} user User object.
+ * @apiSuccess {Number} user.user_id User ID.
+ * @apiSuccess {String} user.username Username.
+ * @apiSuccess {String} user.email User's email.
+ * @apiSuccess {Number} user.user_level_id User level ID.
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+ * {
+ *   "user": {
+ *     "user_id": 1,
+ *     "username": "yoda",
+ *     "email": "yoda@example.com",
+ *     "user_level_id": 2
+ *   }
+ * }
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 404 Not Found
+ * {
+ *   "error": {
+ *     "message": "No user found",
+ *     "status": 404
+ *   }
+ * }
+ */
 
-
+/**
+ * @api {put} /api/users/:id Update a user by its id
+ * @apiVersion 1.0.0
+ * @apiName PutUserById
+ * @apiGroup Users
+ * @apiPermission token
+ * @apiHeader {String} Authorization Bearer token.
+ *
+ * @apiDescription Update a user by its id.
+ *
+ * @apiParam {String} username Username of the user.
+ * @apiParam {String} password Password of the user.
+ * @apiParam {String} email Email of the user.
+ * @apiParamExample {json} Request-Example:
+ * {
+ * "username": "yoda",
+ * "password": "yoda123456789",
+ * "email": "
+ * }
+ *
+ * @apiSuccess {Object} user User object.
+ * @apiSuccess {Number} user.user_id User ID.
+ * @apiSuccess {String} user.username Username.
+ * @apiSuccess {String} user.email User's email.
+ * @apiSuccess {Number} user.user_level_id User level ID.
+ *
+ * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
  * {
  * "user": {
@@ -94,35 +186,24 @@ usersRouter
  * "user_level_id": 2
  * }
  *
+ *
  * @apiErrorExample Error-Response:
- * HTTP/1.1 404 Not Found
+ * HTTP/1.1 400 Bad Request
  * {
  * "error": {
- * "message": "No user found",
- * "status": 404
+ * "message": "Username already exists",
+ * "status": 400
  * }
- *
- *
+ *}
  */
-/**
- * @api {put} /api/users/:id Update a user by its id
- * @apiVersion 1.0.0
- * @apiName PutUserById
- * @apiGroup Users
- * @apiPermission token
- *
- * @apiDescription Update a user by its id.
- *
- * @apiParam {String} username Username of the user.
- * @apiParam {String} password Password of the user.
- * @apiParam {String} email Email of the user.
- */
+
 /**
  * @api {delete} /api/users/:id Delete a user by its id
  * @apiVersion 1.0.0
  * @apiName DeleteUserById
  * @apiGroup Users
  * @apiPermission token
+ * @apiHeader {String} Authorization Bearer token.
  *
  * @apiDescription Delete a user by its id.
  *
@@ -131,6 +212,16 @@ usersRouter
  * {
  * "message": "user  deleted."
  * }
+ *
+ * @apiErrorExample Error-Response:
+ * HTTP/1.1 404 Not Found
+ * {
+ * "error": {
+ * "message": "user not found",
+ * "status": 404
+ * }
+ * }
+ *
  *
  */
 usersRouter
